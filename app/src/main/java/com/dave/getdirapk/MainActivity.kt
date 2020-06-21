@@ -3,6 +3,7 @@ package com.dave.getdirapk
 import android.app.SearchManager
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.content.pm.ApplicationInfo.FLAG_SYSTEM
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
@@ -35,9 +36,15 @@ class MainActivity : AppCompatActivity() {
         var apps = mutableListOf<App>()
         applist = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
         for(app in applist as MutableList<ApplicationInfo>){
-
-            var app = App(app.packageName, app.publicSourceDir, packageManager.getApplicationIcon(app.packageName), app.name)
-            apps.add(app)
+            if ((FLAG_SYSTEM and app.flags)==0){
+                var app = App(
+                    app.packageName,
+                    app.publicSourceDir,
+                    packageManager.getApplicationIcon(app.packageName),
+                    app.name
+                )
+                apps.add(app)
+            }
         }
 
         adapter = AppAdapter(ListApps(apps), ListApps(apps), baseContext)
