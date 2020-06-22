@@ -5,11 +5,13 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class AppViewHolder(itemView:View): RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener{
@@ -72,6 +74,11 @@ class AppAdapter(private val listAppObject: ListApps, private var listAppObjectF
                     var clip = ClipData.newPlainText("path", listAppObjectFiltered.apps[position].pathApp)
                     clipboard.setPrimaryClip(clip)
                     Toast.makeText(mContext, "Path ${listAppObjectFiltered.apps[position].pathApp} copied into clipboard", Toast.LENGTH_LONG).show()
+                } else{
+                    var intent = Intent(mContext, AppPrivacyActivity::class.java)
+                    intent.putExtra("package_name", listAppObjectFiltered.apps[position].packageName)
+                    mContext.startActivity(intent)
+
                 }
             }
         })
